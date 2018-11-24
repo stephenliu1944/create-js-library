@@ -79,8 +79,6 @@
     "lint"
   ],
   "devServer": {
-    "local": {
-      "port": 8080
-    }
+    "local": 8080
   }
 }

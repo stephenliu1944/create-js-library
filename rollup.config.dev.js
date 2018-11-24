@@ -49,7 +49,7 @@ export default [{
         // web服务
         serve({ 				
             host: '0.0.0.0',
-            port: local.port,
+            port: local,
             contentBase: [BUILD_PATH],
             openPage: 'index.html',
             historyApiFallback: 'index.html'
