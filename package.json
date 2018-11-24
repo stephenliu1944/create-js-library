@@ -30,6 +30,7 @@
     "test": "jest",
     "lint": "eslint -c .eslintrc.json --fix --ext .js src/",
     "package": "cross-env BUILD_PATH=dist npm run build:prod",
+    "publish:prerelease": "npm run package && gulp version-prerelease && npm publish",
     "publish:patch": "npm run package && gulp version-patch && npm publish",
     "publish:minor": "npm run package && gulp version-minor && npm publish",
     "publish:major": "npm run package && gulp version-major && npm publish",
