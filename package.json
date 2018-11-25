@@ -9,12 +9,12 @@
   "license": "MIT",
   "author": "Stephen Liu",
   "repository": {
-    "type": "git",
-    "url": "https://github.com/stephenliu1944/scaffolding-js-lib-es6.git"
+    "type": "",
+    "url": ""
   },
-  "homepage": "https://github.com/stephenliu1944/scaffolding-js-lib-es6",
+  "homepage": "",
   "bugs": {
-    "url": "https://github.com/stephenliu1944/scaffolding-js-lib-es6/issues"
+    "url": ""
   },
   "keywords": [],
   "files": [

@@ -3,70 +3,60 @@ import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
 import { eslint } from 'rollup-plugin-eslint';
 import replace from 'rollup-plugin-replace';
-import serve from 'rollup-plugin-serve';
 import del from 'rollup-plugin-delete';
-import htmlTemplate from 'rollup-plugin-generate-html-template';
 import alias from 'rollup-plugin-alias';
-import json from 'rollup-plugin-json';
-import pkg from './package.json';
 
-const { local } = pkg.devServer;
-const BUILD_PATH = 'build';
-const FILE_NAME = 'index';
+const BUILD_PATH = process.env.BUILD_PATH || 'build';
+const NODE_ENV = process.env.NODE_ENV;
+const isDEV = NODE_ENV === 'development';
 
-function base() {
-    return [
-        
-    ];
+export function rollupMerge(source1 = {}, source2 = {}) {
+    var { plugins: p1 = [], ...args1 } = source1;
+    var { plugins: p2 = [], ...args2 } = source2;
+
+    var config = {
+        ...args1,
+        ...args2,
+        plugins: [
+            ...p1,
+            ...p2
+            // TODO 每个插件有一个name属性和Function(resolveId)属性, 可用来对比是否为同一个plugin
+        ]
+    };
+
+    return config;
 }
 
-export default base;
-
-
-
-export default [{
-    input: 'src/dev.js',
-    output: {
-        file: `${BUILD_PATH}/${FILE_NAME}.js`,
-        sourcemap: true,
-        format: 'umd'
-    },
-    plugins: [
-        del({ targets: `${BUILD_PATH}/*` }),
-        alias({
-            utils: 'src/_utils',
-            config: 'src/_config'
-        }),
-        babel({
-            exclude: 'node_modules/**' // only transpile our source code
-        }),
-        resolve({       
-            browser: true       // node_modules 里的包使用browser配置
-        }), 
-        // 全局变量
-        replace({
-            __DEV__: true,
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-        }),
-        commonjs(),     // so Rollup can convert `ms` to an ES module
-        json(),
-        eslint({
-            fix: true,
-            throwOnError: true,
-            include: ['src/**/*.js'], // defaults to .svg, .png, .jpg and .gif files
-            configFile: '.eslintrc.json'
-        }),
-        // web服务
-        serve({ 				
-            host: '0.0.0.0',
-            port: local.port,
-            contentBase: [BUILD_PATH],
-            openPage: 'index.html',
-            historyApiFallback: 'index.html'
-        }),
-        htmlTemplate({
-            template: 'src/template.html',
-            target: 'index.html'
-        })
-    ]
-}];
+export default function(fileName) {
+    return {
+        input: `src/${ isDEV ? 'dev' : 'index' }.js`,
+        // external: ['ms'],    // 打包时排除外部依赖包
+        plugins: [
+            del({
+                targets: `${BUILD_PATH}/${ fileName || '*' }`
+            }),
+            alias({
+                utils: 'src/_utils',
+                config: 'src/_config'
+            }),
+            babel({
+                exclude: 'node_modules/**' // only transpile our source code
+            }),
+            resolve(
+                // browser: NODE_ENV === 'development'       // node_modules 里的包使用browser配置
+            ),
+            commonjs(), // so Rollup can convert `ms` to an ES module
+            eslint({
+                fix: true,
+                throwOnError: true,
+                include: ['src/**/*.js'], // defaults to .svg, .png, .jpg and .gif files
+                configFile: `.eslintrc${ isDEV ? '' : '.prod' }.json`
+            }),
+            // 全局变量
+            replace({
+                __DEV__: isDEV,
+                'process.env.NODE_ENV': JSON.stringify(NODE_ENV)
+            })
+        ]
+    };
+}
