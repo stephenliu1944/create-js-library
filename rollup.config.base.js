@@ -42,9 +42,9 @@ export default function(fileName) {
             babel({
                 exclude: 'node_modules/**' // only transpile our source code
             }),
-            resolve(
-                // browser: NODE_ENV === 'development'       // node_modules 里的包使用browser配置
-            ),
+            resolve({
+                // browser: NODE_ENV === 'development'       // 读取第三方插件package.json的browser配置的入口文件, (针对浏览器插件使用).
+            }),
             commonjs(), // so Rollup can convert `ms` to an ES module
             eslint({
                 fix: true,
