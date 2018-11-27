@@ -18,8 +18,9 @@ module.exports = function (api) {
         '@babel/plugin-proposal-optional-chaining',
         ['babel-plugin-module-resolver', {
             alias: {
-                '^utils/(.+)': './src/_utils/\\1',
-                '^config/(.+)': './src/_config/\\1'
+                '^config/(.+)': './src/_config/\\1',
+                '^constants/(.+)': './src/_constants/\\1',
+                '^utils/(.+)': './src/_utils/\\1'
             }
         }]
     ];

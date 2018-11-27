@@ -22,8 +22,9 @@ module.exports = {
     moduleFileExtensions: ['js', 'json'],
     // A map from regular expressions to module names that allow to stub out resources with a single module
     moduleNameMapper: {
-        '^config(.*)$': '<rootDir>/src/config$1',
-        '^utils(.*)$': '<rootDir>/src/utils$1'
+        '^config(.*)$': '<rootDir>/src/_config$1',
+        '^constants(.*)$': '<rootDir>/src/_constants$1',
+        '^utils(.*)$': '<rootDir>/src/_utils$1'
     },
     // A map from regular expressions to paths to transformers
     transform: {
