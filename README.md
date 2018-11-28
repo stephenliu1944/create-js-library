@@ -55,6 +55,7 @@ bin                                         // 可执行命令目录.
 |-link.bat                                  // 执行 npm link, 用于关联到项目调试.
 |-lint.bat                                  // 执行eslint生产环境代码校验.
 |-package.bat                               // 将src目录中的源码通过 rollup.config.prod.js 编译到dist目录.
+|-package-watch.bat                         // 用于关联到项目时联调持续打包.
 |-publish-major.bat                         // 发布新X版本.
 |-publish-minor.bat                         // 发布新Y版本.
 |-publish-patch.bat                         // 发布新Z版本.
@@ -63,7 +64,6 @@ bin                                         // 可执行命令目录.
 |-test.bat                                  // 执行jest单元测试(window)
 |-test.sh                                   // 执行jest单元测试(linux)
 |-unpublish.bat                             // 用于从服务端下架模块
-|-watch-dist.sh                             // 用于关联到项目时联调持续打包.
 build                                       // 代码编译后生成的临时目录
 dist                                        // 代码打包后生成的临时目录
 src                                         // 项目源码目录
