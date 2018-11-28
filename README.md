@@ -38,13 +38,14 @@ npm login        // 登录npm服务.
 
 ### link调试
 1. 将模块引入到项目中调试执行 bin/link , 然后在需要引入模块的项目中执行 npm link 模块名.
-2. 如需与项目联调, 可以执行 bin/watch-dist, 即可实时打包.
+2. 如需与项目联调, 可以执行 bin/package-watch, 即可实时打包.
 
 ### 打包发布
 1. 发布X版本号执行 bin/publish-major.bat, 表示有重大更新, 并且不兼容老的版本.
 2. 发布Y版本号执行 bin/publish-minor.bat, 表示有功能更新, 并且兼容老的版本.
 3. 发布Z版本号执行 bin/publish-patch.bat, 表示有bug修复, 并且兼容老的版本.
-4. 从服务端卸载模块执行 bin/unpublish.bat.
+4. 发布预发布版本号执行 bin/publish-prerelease.bat, 表示该版本还在开发测试中, 可能会有较大改动.
+5. 从服务端卸载模块执行 bin/unpublish.bat.
 
 ### 目录结构
 ```
@@ -59,6 +60,7 @@ bin                                         // 可执行命令目录.
 |-publish-major.bat                         // 发布新X版本.
 |-publish-minor.bat                         // 发布新Y版本.
 |-publish-patch.bat                         // 发布新Z版本.
+|-publish-prerelease.bat                    // 发布预发布版.
 |-startup.bat                               // 启动开发环境web服务(window)
 |-startup.sh                                // 启动开发环境web服务(linux)
 |-test.bat                                  // 执行jest单元测试(window)
