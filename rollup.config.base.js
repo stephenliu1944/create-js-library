@@ -30,7 +30,7 @@ export function rollupMerge(source1 = {}, source2 = {}) {
 export default function(fileName) {
     return {
         input: `src/${ isDEV ? 'dev' : 'index' }.js`,
-        // external: ['ms'],    // 打包时排除外部依赖包
+        // external: !isDEV && ['ms'],    // 打包时排除外部依赖包
         plugins: [
             del({
                 targets: `${BUILD_PATH}/${ fileName || '*' }`
