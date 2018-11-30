@@ -15,7 +15,7 @@ export default [rollupMerge(base(umdName), {
         name: libraryName
     },
     plugins: [
-        uglify()	                     // TODO: 压缩 format:es 格式时要报错, minify, but only in production
+        uglify()	                     
     ]
 }), rollupMerge(base(cjsName), {
     output: {
