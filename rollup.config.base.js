@@ -30,7 +30,7 @@ export function rollupMerge(source1 = {}, source2 = {}) {
 export default function(fileName) {
     return {
         input: `src/${ isDEV ? 'dev' : 'index' }.js`,
-        // external: !isDEV && ['ms'],    // 打包时排除外部依赖包
+        // external: !isDEV && ['ms'],      // 打包时排除外部依赖包
         plugins: [
             del({
                 targets: `${BUILD_PATH}/${ fileName || '*' }`
@@ -46,11 +46,17 @@ export default function(fileName) {
             resolve({
                 // browser: NODE_ENV === 'development'       // 读取第三方插件package.json的browser配置的入口文件, (针对浏览器插件使用).
             }),
-            commonjs(), // so Rollup can convert `ms` to an ES module
+            commonjs(
+                // isDEV && {
+                //     namedExports: {
+                //         'node_modules/module/dist/index.umd.js': ['isString']
+                //     }
+                // }
+            ), 
             eslint({
                 fix: true,
                 throwOnError: true,
-                include: ['src/**/*.js'], // defaults to .svg, .png, .jpg and .gif files
+                include: ['src/**/*.js'], 
                 configFile: `.eslintrc${ isDEV ? '' : '.prod' }.json`
             }),
             // 全局变量

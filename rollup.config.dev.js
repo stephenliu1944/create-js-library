@@ -1,3 +1,4 @@
+import json from 'rollup-plugin-json';
 import serve from 'rollup-plugin-serve';
 import htmlTemplate from 'rollup-plugin-generate-html-template';
 import base, { rollupMerge } from './rollup.config.base';
@@ -14,6 +15,7 @@ export default rollupMerge(base(), {
         sourcemap: true
     },
     plugins: [
+        json(),
         // web服务
         serve({
             host: '0.0.0.0',
