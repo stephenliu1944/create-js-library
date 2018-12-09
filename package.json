@@ -1,6 +1,6 @@
 {
   "name": "scaffolding-js-lib-es6",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "用于开发纯js库的脚手架",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
