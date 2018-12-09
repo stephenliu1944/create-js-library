@@ -43,8 +43,9 @@
     }
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --fix"
+    "src/**/*.js": [
+      "npm run lint:js",
+      "git add"
     ]
   },
   "dependencies": {
