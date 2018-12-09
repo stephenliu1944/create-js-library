@@ -6,6 +6,6 @@ var person = {
 };
 
 export default function() {
-    console.log('b', b);
+    // console.log('b', b);
     return person;
 }
