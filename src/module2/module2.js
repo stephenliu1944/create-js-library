@@ -3,8 +3,8 @@
 //     a
 // };
 
-export var b = 10;
+export var b=10;
 
-export function printB() {
+export function printB(){
     return b;
 }
