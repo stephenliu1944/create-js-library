@@ -1,6 +1,5 @@
 import { b } from '../module2';
 
-
 var person = {
     name: 'stephen',
     age: 34
