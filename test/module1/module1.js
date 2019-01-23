@@ -1,7 +1,7 @@
-describe('describe 1', function () {
-    it('xxx', function () {});
+import { module1 } from '../../src/index';
+
+it('module1', function () {
+    var info = module1();
+    expect(info).toMatchSnapshot();
 });
 
-describe('describe 2', function () {
-    it('xxx', function () {});
-});

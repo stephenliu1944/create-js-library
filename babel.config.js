@@ -1,18 +1,16 @@
-module.exports = function (api) {
-    api.cache(true);
+const ENV = {
+    DEVELOPMENT: 'development',
+    PRODUCTION: 'production',
+    TEST: 'test'
+};
 
-    const presets = [
-        ['@babel/preset-env', {
-            'targets': [
-                'last 2 version',
-                'ie >= 9'
-            ],
-            modules: false // transform esm to cjs, false to keep esm.
-        }]
-    ];
-    const plugins = [
+module.exports = function (api) {
+    api.cache.forever();
+    
+    var env = process.env.NODE_ENV;
+    var presets = [];
+    var plugins = [
         '@babel/plugin-transform-runtime',
-        '@babel/plugin-external-helpers',
         '@babel/plugin-proposal-class-properties',
         '@babel/plugin-proposal-export-default-from',
         '@babel/plugin-proposal-optional-chaining',
@@ -25,13 +23,28 @@ module.exports = function (api) {
         }]
     ];
 
+    switch(env) {
+        case ENV.DEVELOPMENT:
+        case ENV.PRODUCTION:        
+            presets.push([        
+                ['@babel/preset-env', {
+                    'targets': [
+                        'last 2 version',
+                        'ie >= 9'
+                    ],
+                    modules: false // transform esm to cjs, false to keep esm.
+                }]
+            ]);
+            plugins.push('@babel/plugin-external-helpers');
+            break;
+        case ENV.TEST:
+            presets.push('@babel/preset-env');
+            plugins.push('@babel/plugin-proposal-export-namespace-from');
+            break;
+    }
+
     return {
         presets,
-        plugins,
-        env: {
-            test: {
-                presets: ['@babel/preset-env']
-            }
-        }
+        plugins
     };
 };
