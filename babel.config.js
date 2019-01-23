@@ -5,7 +5,7 @@ const ENV = {
 };
 
 module.exports = function (api) {
-    api.cache.forever();
+    api.cache(true);
     
     var env = process.env.NODE_ENV;
     var presets = [];
