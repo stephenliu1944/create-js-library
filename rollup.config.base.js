@@ -1,3 +1,4 @@
+import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
 import { eslint } from 'rollup-plugin-eslint';
@@ -42,6 +43,7 @@ export default function(fileName) {
             babel({
                 exclude: 'node_modules/**' // only transpile our source code
             }),
+            resolve(),
             commonjs(
                 // isDEV && {
                 //     namedExports: {
