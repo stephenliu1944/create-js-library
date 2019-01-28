@@ -36,7 +36,6 @@ export default function(fileName) {
                 targets: `${BUILD_PATH}/${ fileName || '*' }`
             }),
             alias({
-                config: 'src/config',
                 constants: 'src/constants',
                 utils: 'src/utils'
             }),
