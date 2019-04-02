@@ -42,7 +42,11 @@ export default function(fileName) {
             babel({
                 exclude: 'node_modules/**' // only transpile our source code
             }),
-            resolve(),
+            resolve(
+                /* {
+                    browser: isDEV       // 读取第三方插件package.json的browser配置的入口文件, (针对浏览器插件使用).
+                } */
+            ),
             commonjs(
                 // isDEV && {
                 //     namedExports: {
