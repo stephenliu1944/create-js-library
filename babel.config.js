@@ -4,7 +4,7 @@ const ENV = {
     TEST: 'test'
 };
 
-module.exports = function (api) {
+module.exports = function(api) {
     api.cache(true);
     
     var env = process.env.NODE_ENV;
@@ -15,6 +15,7 @@ module.exports = function (api) {
         '@babel/plugin-proposal-export-default-from',
         '@babel/plugin-proposal-export-namespace-from',
         '@babel/plugin-proposal-optional-chaining',
+        '@babel/plugin-proposal-pipeline-operator',
         ['babel-plugin-module-resolver', {
             alias: {
                 '^constants/(.+)': './src/constants/\\1',
@@ -23,7 +24,7 @@ module.exports = function (api) {
         }]
     ];
 
-    switch(env) {
+    switch (env) {
         case ENV.DEVELOPMENT:
         case ENV.PRODUCTION:        
             presets.push(        
