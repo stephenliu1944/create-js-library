@@ -15,7 +15,9 @@ module.exports = function(api) {
         '@babel/plugin-proposal-export-default-from',
         '@babel/plugin-proposal-export-namespace-from',
         '@babel/plugin-proposal-optional-chaining',
-        '@babel/plugin-proposal-pipeline-operator',
+        ['@babel/plugin-proposal-pipeline-operator', { 
+            'proposal': 'minimal' 
+        }],
         ['babel-plugin-module-resolver', {
             alias: {
                 '^constants/(.+)': './src/constants/\\1',
