@@ -1,1 +1,2 @@
-export default from './module1';
+export default function module1() {
+}
