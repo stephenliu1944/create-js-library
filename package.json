@@ -91,7 +91,8 @@
     "rollup-plugin-node-resolve": "^4.0.0",
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-serve": "^0.6.0",
-    "rollup-plugin-uglify": "^4.0.0"
+    "rollup-plugin-uglify": "^4.0.0",
+    "rollup-plugin-url": "^2.2.2"
   },
   "devEnvironments": {
     "servers": {

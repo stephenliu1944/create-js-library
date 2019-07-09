@@ -5,6 +5,7 @@ import { eslint } from 'rollup-plugin-eslint';
 import replace from 'rollup-plugin-replace';
 import del from 'rollup-plugin-delete';
 import alias from 'rollup-plugin-alias';
+import url from 'rollup-plugin-url';
 
 const BUILD_PATH = process.env.BUILD_PATH || 'build';
 const NODE_ENV = process.env.NODE_ENV;
@@ -37,6 +38,7 @@ export default function(fileName) {
             }),
             alias({
                 constants: 'src/constants',
+                images: 'src/images',
                 utils: 'src/utils'
             }),
             babel({
@@ -64,6 +66,10 @@ export default function(fileName) {
             replace({
                 __DEV__: isDEV,
                 'process.env.NODE_ENV': JSON.stringify(NODE_ENV)
+            }),
+            // import file
+            url({
+                limit: 999999 * 1024                      // only use inline files, can't use copy files.
             })
         ]
     };
