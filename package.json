@@ -7,7 +7,6 @@
   "browser": "dist/index.umd.js",
   "libraryName": "MyLib",
   "license": "MIT",
-  "author": "",
   "repository": {
     "type": "git",
     "url": ""
