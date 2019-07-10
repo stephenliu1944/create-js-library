@@ -1,4 +1,4 @@
-# scaffolding-js-lib-es6
+# my-lib
 
 ## Install
 

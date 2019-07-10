@@ -1,7 +1,12 @@
 'use strict';
 var gulp = require('gulp');
 var bump = require('gulp-bump');
+var sftp = require('gulp-sftp-up4');
 var { execSync } = require('child_process');
+var { deploy } = require('./package.json');
+
+const { dev, test } = deploy;
+const DIST_PATH = 'dist';                      // 目的地文件
 
 // 更新预发布版本号, 开发中版本, 可能会有较大改动.
 gulp.task('version-prerelease', () => {
@@ -42,3 +47,16 @@ gulp.task('git-push', (done) => {
     execSync('git push');
     done();
 });
+
+// 将静态资源发布到 dev 服务器
+gulp.task('deploy-dev', () => {
+    return gulp.src(`${DIST_PATH}/**`)
+        .pipe(sftp(dev));
+});
+// 将静态资源发布到 test 服务器
+gulp.task('deploy-test', () => {
+    return gulp.src(`${DIST_PATH}/**`)
+        .pipe(sftp(test));
+});
+// 同时部署到开发和测试服务器
+gulp.task('deploy-all', gulp.parallel('deploy-dev', 'deploy-test'));
