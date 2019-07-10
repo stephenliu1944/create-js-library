@@ -1,9 +1,10 @@
 'use strict';
 var gulp = require('gulp');
 var bump = require('gulp-bump');
+var zip = require('gulp-zip');
 var sftp = require('gulp-sftp-up4');
 var { execSync } = require('child_process');
-var { deploy } = require('./package.json');
+var { libraryName, deploy } = require('./package.json');
 
 const { dev, test } = deploy;
 const DIST_PATH = 'dist';                      // 目的地文件
@@ -47,16 +48,21 @@ gulp.task('git-push', (done) => {
     execSync('git push');
     done();
 });
-
+// 将静态资源压缩为zip格式
+gulp.task('zip', () => {
+    return gulp.src([`${DIST_PATH}/**`, `!${DIST_PATH}/*.zip`], { base: `${DIST_PATH}/` })
+        .pipe(zip(`${libraryName}.zip`))
+        .pipe(gulp.dest(DIST_PATH));
+});
 // 将静态资源发布到 dev 服务器
-gulp.task('deploy-dev', () => {
-    return gulp.src(`${DIST_PATH}/**`)
+gulp.task('deploy-dev', gulp.series('zip', () => {
+    return gulp.src(dev.zip ? [`${DIST_PATH}/*.zip`] : [`${DIST_PATH}/**`, `!${DIST_PATH}/*.zip`])
         .pipe(sftp(dev));
-});
+}));
 // 将静态资源发布到 test 服务器
-gulp.task('deploy-test', () => {
-    return gulp.src(`${DIST_PATH}/**`)
+gulp.task('deploy-test', gulp.series('zip', () => {
+    return gulp.src(test.zip ? [`${DIST_PATH}/*.zip`] : [`${DIST_PATH}/**`, `!${DIST_PATH}/*.zip`])
         .pipe(sftp(test));
-});
+}));
 // 同时部署到开发和测试服务器
 gulp.task('deploy-all', gulp.parallel('deploy-dev', 'deploy-test'));
