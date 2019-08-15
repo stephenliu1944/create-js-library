@@ -21,7 +21,7 @@ export function rollupMerge(source1 = {}, source2 = {}) {
         plugins: [
             ...p1,
             ...p2
-            // TODO 每个插件有一个name属性和Function(resolveId)属性, 可用来对比是否为同一个plugin
+            // TODO: 每个插件有一个name属性和Function(resolveId)属性, 可用来对比是否为同一个plugin
         ]
     };
 
@@ -69,7 +69,7 @@ export default function(fileName) {
             }),
             // import file
             url({
-                limit: 999999 * 1024                      // only use inline files, can't use copy files.
+                limit: 999999 * 1024                      // only use inline files, don't use copy files.
             })
         ]
     };
