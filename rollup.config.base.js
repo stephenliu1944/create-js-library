@@ -6,6 +6,7 @@ import replace from 'rollup-plugin-replace';
 import del from 'rollup-plugin-delete';
 import alias from 'rollup-plugin-alias';
 import url from 'rollup-plugin-url';
+import merge from 'lodash/merge';
 
 const BUILD_PATH = process.env.BUILD_PATH || 'build';
 const NODE_ENV = process.env.NODE_ENV;
@@ -26,6 +27,24 @@ export function rollupMerge(source1 = {}, source2 = {}) {
     };
 
     return config;
+}
+
+function repairPluginName(plugin = {}, name) {
+    if (!plugin.name) {
+        plugin.name = name;
+    }
+
+    return true;
+}
+
+export function mergeConfig(baseConfig, newConfig) {
+    var { plugins: basePlugins = [], ...baseOthers } = baseConfig;
+    var { plugins: newPlugins = [], ...newOthers } = newConfig;
+
+    var config = merge(baseOthers, newOthers);
+    baseOthers;
+    merge;
+
 }
 
 export default function(fileName) {

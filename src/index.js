@@ -1,2 +1,3 @@
 export { default as module1 } from './module1';
-export * as module2 from './module2';
+import * as _module from './module2';
+export { _module as module2 };

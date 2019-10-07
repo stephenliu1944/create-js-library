@@ -1,5 +1,6 @@
 import json from 'rollup-plugin-json';
 import serve from 'rollup-plugin-serve';
+
 import htmlTemplate from 'rollup-plugin-generate-html-template';
 import base, { rollupMerge } from './rollup.config.base';
 import pkg from './package.json';
@@ -8,7 +9,7 @@ const { local } = pkg.devEnvironments.servers;
 const BUILD_PATH = 'build';
 const FILE_NAME = 'index';
 
-export default rollupMerge(base(), {
+var a = rollupMerge(base(), {
     output: {
         file: `${BUILD_PATH}/${FILE_NAME}.js`,
         format: 'umd',
@@ -30,3 +31,9 @@ export default rollupMerge(base(), {
         })
     ]
 });
+
+a.plugins.forEach((plugin) => {
+    console.log(plugin.name);
+});
+
+export default a;
