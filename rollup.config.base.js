@@ -39,7 +39,7 @@ export default function({ filename }) {
                 images: 'src/images',
                 utils: 'src/utils'
             }),
-            // eslint 需要放在 babel 前面, 否则 fix后代码会是babel编译后的
+            // eslint 插件需要放在 babel 插件前面, 否则 fix 后代码会是 babel 编译后的
             eslint({                
                 fix: true,
                 throwOnError: true,

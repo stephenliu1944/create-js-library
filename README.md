@@ -1,4 +1,5 @@
 # my-lib
+Use for development JS library.
 
 ## Install
 
