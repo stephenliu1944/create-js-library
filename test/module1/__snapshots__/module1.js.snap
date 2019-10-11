@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`module1 1`] = `
-Object {
-  "age": 34,
-  "name": "stephen",
-}
-`;

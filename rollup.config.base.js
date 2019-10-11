@@ -2,90 +2,66 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
 import { eslint } from 'rollup-plugin-eslint';
-import replace from 'rollup-plugin-replace';
 import del from 'rollup-plugin-delete';
 import alias from 'rollup-plugin-alias';
 import url from 'rollup-plugin-url';
 import merge from 'lodash/merge';
 
-const BUILD_PATH = process.env.BUILD_PATH || 'build';
-const NODE_ENV = process.env.NODE_ENV;
-const isDEV = NODE_ENV === 'development';
+export function rollupMerge(base, source) {
+    var { plugins: basePlugins = [], ...baseOthers } = base;
+    var { plugins: sourcePlugins = [], ...sourceOthers } = source;
 
-export function rollupMerge(source1 = {}, source2 = {}) {
-    var { plugins: p1 = [], ...args1 } = source1;
-    var { plugins: p2 = [], ...args2 } = source2;
-
-    var config = {
-        ...args1,
-        ...args2,
-        plugins: [
-            ...p1,
-            ...p2
-            // TODO: 每个插件有一个name属性和Function(resolveId)属性, 可用来对比是否为同一个plugin
-        ]
-    };
-
+    var config = merge({}, baseOthers, sourceOthers);
+    config.plugins = basePlugins.concat(sourcePlugins);
+    
     return config;
 }
 
-function repairPluginName(plugin = {}, name) {
-    if (!plugin.name) {
-        plugin.name = name;
-    }
-
-    return true;
-}
-
-export function mergeConfig(baseConfig, newConfig) {
-    var { plugins: basePlugins = [], ...baseOthers } = baseConfig;
-    var { plugins: newPlugins = [], ...newOthers } = newConfig;
-
-    var config = merge(baseOthers, newOthers);
-    baseOthers;
-    merge;
-
-}
-
-export default function(fileName) {
+export default function({ filename }) {
+    const DEV = process.env.NODE_ENV === 'development';
+    const BUILD_PATH = process.env.BUILD_PATH || 'build';
+    
     return {
-        input: `src/${ isDEV ? 'dev' : 'index' }.js`,
-        // external: !isDEV && ['ms'],      // 打包时排除外部依赖包
+        input: `${DEV ? 'test' : 'src'}/index.js`,
+        output: {
+            file: `${BUILD_PATH}/${filename}`
+        },
+        // external: !DEV && ['ms'],      // 打包时排除外部依赖包
+        /**
+         * 注意: 插件配置的顺序会影响代码的编译执行!
+         */
         plugins: [
             del({
-                targets: `${BUILD_PATH}/${ fileName || '*' }`
+                targets: `${BUILD_PATH}/${filename}`
             }),
             alias({
                 constants: 'src/constants',
                 images: 'src/images',
                 utils: 'src/utils'
             }),
+            // eslint 需要放在 babel 前面, 否则 fix后代码会是babel编译后的
+            eslint({                
+                fix: true,
+                throwOnError: true,
+                throwOnWarning: true,
+                include: ['src/**/*.js'], 
+                configFile: `.eslintrc${ DEV ? '' : '.prod' }.json`
+            }),
             babel({
                 exclude: 'node_modules/**' // only transpile our source code
             }),
             resolve(
                 /* {
-                    browser: isDEV       // 读取第三方插件package.json的browser配置的入口文件, (针对浏览器插件使用).
+                    browser: DEV       // 读取第三方插件package.json的browser配置的入口文件, (针对浏览器插件使用).
                 } */
             ),
             commonjs(
-                // isDEV && {
+                // DEV && {
                 //     namedExports: {
                 //         'node_modules/module/dist/index.umd.js': ['isString']
                 //     }
                 // }
             ), 
-            eslint({
-                fix: true,
-                throwOnError: true,
-                include: ['src/**/*.js'], 
-                configFile: `.eslintrc${ isDEV ? '' : '.prod' }.json`
-            }),
-            // 全局变量
-            replace({
-                __DEV__: isDEV,
-                'process.env.NODE_ENV': JSON.stringify(NODE_ENV)
-            }),
             // import file
             url({
                 limit: 999999 * 1024                      // only use inline files, don't use copy files.
