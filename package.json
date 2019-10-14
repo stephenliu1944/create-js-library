@@ -25,7 +25,7 @@
     "build:dev": "cross-env NODE_ENV=development rollup -c rollup.config.dev.js",
     "build:prod": "cross-env NODE_ENV=production rollup -c rollup.config.prod.js",
     "start": "cross-env NODE_ENV=development rollup -c rollup.config.dev.js -w",
-    "lint:js": "eslint -c .eslintrc.prod.json --fix",
+    "lint:js": "eslint src/**/*.{js,jsx} -c .eslintrc.prod.json --fix",
     "test": "jest",
     "package": "cross-env BUILD_PATH=dist npm run build:prod && gulp zip",
     "package:watch": "cross-env BUILD_PATH=dist NODE_ENV=production rollup -w -c rollup.config.prod.js",
@@ -45,14 +45,9 @@
     }
   },
   "lint-staged": {
-    "linters": {
-      "src/**/*.js": [
-        "npm run lint:js",
-        "git add"
-      ]
-    },
-    "ignore": [
-      "src/dev.js"
+    "src/**/*.{js,jsx}": [
+      "eslint -c .eslintrc.prod.json --fix",
+      "git add"
     ]
   },
   "dependencies": {
@@ -73,7 +68,7 @@
     "babel-jest": "^23.6.0",
     "babel-plugin-module-resolver": "^3.1.1",
     "cross-env": "^5.2.0",
-    "eslint": "^5.8.0",
+    "eslint": "^6.5.0",
     "gulp": "^4.0.0",
     "gulp-bump": "^3.1.1",
     "gulp-sftp-up4": "^0.1.8",
@@ -81,19 +76,20 @@
     "husky": "^1.2.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^23.6.0",
-    "lint-staged": "^8.1.0",
-    "rollup": "^1.1.2",
-    "rollup-plugin-alias": "^1.4.0",
-    "rollup-plugin-babel": "^4.0.3",
-    "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-delete": "^0.1.2",
-    "rollup-plugin-eslint": "^5.0.0",
-    "rollup-plugin-generate-html-template": "1.1.0",
-    "rollup-plugin-json": "^3.1.0",
-    "rollup-plugin-node-resolve": "^4.0.0",
-    "rollup-plugin-replace": "^2.0.0",
-    "rollup-plugin-serve": "^0.6.0",
-    "rollup-plugin-uglify": "^4.0.0",
+    "lint-staged": "^9.3.0",
+    "lodash": "^4.17.15",
+    "rollup": "^1.23.0",
+    "rollup-plugin-alias": "^2.0.1",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-delete": "^1.1.0",
+    "rollup-plugin-eslint": "^7.0.0",
+    "rollup-plugin-generate-html-template": "1.5.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-serve": "^1.0.1",
+    "rollup-plugin-uglify": "^6.0.3",
     "rollup-plugin-url": "^2.2.2"
   },
   "devEnvironments": {
