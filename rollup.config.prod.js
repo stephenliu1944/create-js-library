@@ -8,7 +8,7 @@ var cjsName = main.split('/')[1];
 var esmName = module.split('/')[1];
 var umdName = browser.split('/')[1];
 
-export default [rollupMerge(base({ filename: umdName }), {
+export default [rollupMerge(base(umdName), {
     output: {
         format: 'umd',
         sourcemap: true,
@@ -21,12 +21,12 @@ export default [rollupMerge(base({ filename: umdName }), {
     plugins: [
         uglify()	                     
     ]
-}), rollupMerge(base({ filename: cjsName }), {
+}), rollupMerge(base(cjsName), {
     output: {
         format: 'cjs',
         exports: EXPORTS
     }
-}), rollupMerge(base({ filename: esmName }), {
+}), rollupMerge(base(esmName), {
     output: {
         format: 'es'
     }

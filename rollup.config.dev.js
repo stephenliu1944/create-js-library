@@ -7,11 +7,9 @@ import pkg from './package.json';
 
 const { local } = pkg.devEnvironments.servers;
 
-export default rollupMerge(base({
-    filename: 'index.js'
-}), {
+export default rollupMerge(base(), {
     output: {
-        format: 'umd',
+        format: 'iife',
         sourcemap: true
     },
     plugins: [

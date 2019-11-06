@@ -17,7 +17,7 @@ export function rollupMerge(base, source) {
     return config;
 }
 
-export default function({ filename }) {
+export default function(filename = 'index.js') {
     const DEV = process.env.NODE_ENV === 'development';
     const BUILD_PATH = process.env.BUILD_PATH || 'build';
     
