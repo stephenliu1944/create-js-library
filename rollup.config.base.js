@@ -48,20 +48,17 @@ export default function({ filename }) {
                 configFile: `.eslintrc${ DEV ? '' : '.prod' }.json`
             }),
             babel({
-                exclude: 'node_modules/**' // only transpile our source code
+                exclude: 'node_modules/**', // only transpile our source code
+                runtimeHelpers: true
             }),
-            resolve(
-                /* {
-                    browser: DEV       // 读取第三方插件package.json的browser配置的入口文件, (针对浏览器插件使用).
-                } */
-            ),
-            commonjs(
-                // DEV && {
-                //     namedExports: {
-                //         'node_modules/module/dist/index.umd.js': ['isString']
-                //     }
+            resolve({
+                mainFields: DEV ? ['browser', 'main'] : ['module', 'main']  // 读取第三方库 package.json 文件的入口属性
+            }),
+            commonjs({
+                // namedExports: DEV && {
+                //     'react': ['Component']
                 // }
-            ), 
+            }), 
             // import file
             url({
                 limit: 999999 * 1024                      // only use inline files, don't use copy files.
