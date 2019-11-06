@@ -22,7 +22,7 @@ export default function({ filename }) {
     const BUILD_PATH = process.env.BUILD_PATH || 'build';
     
     return {
-        input: `${DEV ? 'test' : 'src'}/index.js`,
+        input: DEV ? 'test/app.js' : 'src/index.js',
         output: {
             file: `${BUILD_PATH}/${filename}`
         },
