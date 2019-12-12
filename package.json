@@ -27,7 +27,7 @@
     "start": "cross-env NODE_ENV=development rollup -c rollup.config.dev.js -w",
     "lint:js": "eslint src/**/*.{js,jsx} -c .eslintrc.prod.json --fix",
     "test": "jest",
-    "package": "cross-env BUILD_PATH=dist npm run build:prod && gulp zip",
+    "package": "cross-env BUILD_PATH=dist npm run build:prod",
     "package:watch": "cross-env BUILD_PATH=dist NODE_ENV=production rollup -w -c rollup.config.prod.js",
     "publish:prerelease": "npm run package && gulp version-prerelease && npm publish",
     "publish:patch": "npm run package && gulp version-patch && npm publish",
@@ -37,6 +37,7 @@
     "deploy:dev": "npm run package && gulp deploy-dev",
     "deploy:test": "npm run package && gulp deploy-test",
     "deploy:all": "npm run package && gulp deploy-all",
+    "git:zip": "gulp zip",
     "git:push": "gulp git-push"
   },
   "husky": {
