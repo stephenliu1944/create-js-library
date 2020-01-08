@@ -1,0 +1,2 @@
+!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports):"function"==typeof define&&define.amd?define(["exports"],t):t((e=e||self).MyLib={})}(this,function(e){"use strict";function t(e){this.message=e}t.prototype.getMessage=function(){return this.message},e.module1=function(e){return e},e.module2=t,Object.defineProperty(e,"__esModule",{value:!0})});
+//# sourceMappingURL=index.umd.js.map

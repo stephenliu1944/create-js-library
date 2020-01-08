@@ -5,7 +5,6 @@
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "browser": "dist/index.umd.js",
-  "libraryName": "MyLib",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -22,22 +21,19 @@
     "README.md"
   ],
   "scripts": {
-    "build:dev": "cross-env NODE_ENV=development rollup -c rollup.config.dev.js",
-    "build:prod": "cross-env NODE_ENV=production rollup -c rollup.config.prod.js",
-    "start": "cross-env NODE_ENV=development rollup -c rollup.config.dev.js -w",
+    "build:dev": "cross-env NODE_ENV=development webpack --colors --display-error-details",
+    "build:prod": "cross-env NODE_ENV=production rollup -c rollup.config.js",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --colors",
+    "mock": "mock-server ./mock/data --static ./mock/static --config ./mock/mock.config.js --watch",
+    "start:mock": "concurrently \"cross-env npm start\" \"npm run mock\"",
     "lint:js": "eslint src/**/*.{js,jsx} -c .eslintrc.prod.json --fix",
     "test": "jest",
     "package": "cross-env BUILD_PATH=dist npm run build:prod",
-    "package:watch": "cross-env BUILD_PATH=dist NODE_ENV=production rollup -w -c rollup.config.prod.js",
     "publish:prerelease": "npm run package && gulp version-prerelease && npm publish",
     "publish:patch": "npm run package && gulp version-patch && npm publish",
     "publish:minor": "npm run package && gulp version-minor && npm publish",
     "publish:major": "npm run package && gulp version-major && npm publish",
     "unpublish": "npm unpublish -f",
-    "deploy:dev": "npm run package && gulp deploy-dev",
-    "deploy:test": "npm run package && gulp deploy-test",
-    "deploy:all": "npm run package && gulp deploy-all",
-    "git:zip": "gulp zip",
     "git:push": "gulp git-push"
   },
   "husky": {
@@ -63,58 +59,61 @@
     "@babel/plugin-transform-runtime": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/register": "^7.0.0",
+    "@easytool/define": "^0.1.1",
+    "@easytool/mock-server": "^0.1.2",
+    "@easytool/proxy-config": "^0.1.2",
+    "@rollup/plugin-commonjs": "^11.0.1",
+    "@rollup/plugin-json": "^4.0.1",
+    "@rollup/plugin-node-resolve": "^6.1.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^9.0.0",
     "babel-jest": "^23.6.0",
-    "babel-plugin-module-resolver": "^3.1.1",
+    "babel-loader": "^8.0.6",
+    "case-sensitive-paths-webpack-plugin": "^2.2.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "concurrently": "^5.0.2",
     "cross-env": "^5.2.0",
     "eslint": "^6.5.0",
+    "eslint-loader": "^3.0.3",
     "gulp": "^4.0.0",
     "gulp-bump": "^3.1.1",
-    "gulp-sftp-up4": "^0.1.8",
-    "gulp-zip": "^4.2.0",
+    "html-webpack-plugin": "^3.2.0",
     "husky": "^1.2.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^23.6.0",
     "lint-staged": "^9.3.0",
     "lodash": "^4.17.15",
-    "rollup": "^1.23.0",
+    "merge-stream": "^2.0.0",
+    "rollup": "^1.27.14",
     "rollup-plugin-alias": "^2.0.1",
     "rollup-plugin-babel": "^4.3.3",
-    "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-delete": "^1.1.0",
     "rollup-plugin-eslint": "^7.0.0",
-    "rollup-plugin-generate-html-template": "1.5.0",
-    "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-replace": "^2.2.0",
-    "rollup-plugin-serve": "^1.0.1",
     "rollup-plugin-uglify": "^6.0.3",
-    "rollup-plugin-url": "^2.2.2"
+    "rollup-plugin-url": "^2.2.2",
+    "style-loader": "^1.1.2",
+    "url-loader": "^3.0.0",
+    "webpack": "^4.41.5",
+    "webpack-bundle-analyzer": "^3.6.0",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
   },
   "devEnvironments": {
     "servers": {
-      "local": 8080
-    }
-  },
-  "deploy": {
-    "dev": {
-      "host": "",
-      "port": 22,
-      "user": "",
-      "pass": "",
-      "zip": true,
-      "timeout": 60000,
-      "remotePath": "/usr/local/static"
+      "local": 8080,
+      "mock": 3000
     },
-    "test": {
-      "host": "",
-      "port": 22,
-      "user": "",
-      "pass": "",
-      "zip": true,
-      "timeout": 60000,
-      "remotePath": "/usr/local/static"
-    }
+    "globals": {
+      "__DEV__": true,
+      "process.env.NODE_ENV": "development"
+    },
+    "proxies": {}
+  },
+  "parcels": {
+    "name": "MyLib",
+    "exports": "auto",
+    "external": [],
+    "globals": {}
   }
 }
