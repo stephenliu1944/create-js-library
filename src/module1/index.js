@@ -1,1 +1,6 @@
-export default from './module1';
+/**
+ * Demo
+ */
+export default function module1(message) {
+    return message;
+}
