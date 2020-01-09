@@ -29,6 +29,7 @@
     "lint:js": "eslint src/**/*.{js,jsx} -c .eslintrc.prod.json --fix",
     "test": "jest",
     "package": "cross-env BUILD_PATH=dist npm run build:prod",
+    "link": "npm run package && npm link",
     "publish:prerelease": "npm run package && gulp version-prerelease && npm publish",
     "publish:patch": "npm run package && gulp version-patch && npm publish",
     "publish:minor": "npm run package && gulp version-minor && npm publish",

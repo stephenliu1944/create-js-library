@@ -40,34 +40,61 @@ npm login
 ```
 
 ## 模块配置
-1. 在 package.json 中对模块的相关信息进行配置, 参考npm官方文档.
-2. name 为模块的名字, libraryName 为UMD格式打包后的全局变量名, 这两项为必填.
 ```js
-
-```
-
-## 开发环境配置
-在 package.json > devEnvironments 中可修改相关配置:
-```js
-"devEnvironments": {
-    "servers": {
-        "local": 8080,      // 本地服务端口
-        "mock": 3000        // mock服务端口
+{
+  "name": "my-lib",                 // 模块名称
+  "version": "0.1.0",               // 模块版本
+  "description": "Use for development JS library.",     // 模块描述
+  "main": "dist/index.cjs.js",      // 模块引入主路径
+  "module": "dist/index.esm.js",    // 模块esm格式引入路径
+  "browser": "dist/index.umd.js",   // 模块umd格式引入路径
+  "license": "MIT",                 // 模块使用协议
+  "repository": {                   // 模块保存的仓库地址
+    "type": "git",
+    "url": ""
+  },
+  "homepage": "",                   // 模块首页地址
+  "bugs": {                         // 模块提issue地址
+    "url": ""
+  },
+  "keywords": [],                   // 模块搜索关键字
+  "files": [                        // 模块打包上传到npm服务器的文件
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  ...
+  // 以下为项目自定义属性, npm官方文档不存在.
+  "devEnvironments": {              // 开发环境配置
+    "servers": {                    // 本地服务配置
+      "local": 8080,                // web服务端口
+      "mock": 3000                  // mock服务端口
     },
-    "globals": {            // 全局变量, 仅适用于开发环境, 生产环境无效
-        "__DEV__": true,
-        "process.env.NODE_ENV": "development"
+    "globals": {                    // 全局变量, 仅适用于开发环境, 生产环境无效
+      "__DEV__": true,
+      "process.env.NODE_ENV": "development"
     },
-    "proxies": {}           // 代理服务配置, 如需要可参考 @easytool/proxy-config 文档配置
+    "proxies": {}                   // HTTP请求代理配置, 如需要可参考 @easytool/proxy-config 文档配置
+  },
+  "parcels": {                      // 生产环境打包配置
+    "name": "MyLib",                // 模块打包为 umd 格式时, 使用的全局变量名称
+    "exports": "auto",              // 模块打包为 umd 和 cjs 格式时的导出模式, 参考 rollup > output.exports 文档说明
+    "external": [],                 // 模块打包时排除的依赖项, 参考 rollup > external 文档说明
+    "globals": {}                   // 模块打包为 umd 格式时, 依赖项使用的全局变量名称, 参考 rollup > output.globals 文档说明
+  }
 }
 ```
+其余配置请参考npm官方文档.
 
 ## 本地调试
-1. 开发阶段执行 bin/startup.bat 启动开发服务器, 模块开发过程中可在 src/dev.js 文件中模拟外部使用模块的情况进行本地调试.
-2. 开发完成后可以在 bin/test.bat 执行单元测试.(需先在test/目录进行单元测试编码, 测试框架为jest).
+### 单元测试
+在 test 目录对模块进行单元测试编码后, 执行 bin/test.bat 启动单元测试(测试框架为jest).
+
+### Web测试
+在 test/app.js 中引用模块(src/index.js 或 dist/index.umd.js), 模拟项目调用, 执行 bin/startup.bat 启动 Web 服务, 通过 http://localhost:8080 访问.
 
 ## link调试
-将模块引入到项目中调试执行 bin/link.bat , 然后在需要引入模块的项目中执行:
+将模块引入到应用项目(使用模块的项目)中调试, 执行 bin/link.bat, 然后在应用项目中执行:
 ```
 npm link 模块名
 ```
