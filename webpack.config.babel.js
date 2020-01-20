@@ -1,7 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 import { settings } from '@easytool/proxy-config';
-import define from '@easytool/define';
+import define from '@easytool/define-config';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
