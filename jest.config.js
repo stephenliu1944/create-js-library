@@ -19,12 +19,6 @@ module.exports = {
     moduleDirectories: ['src', 'node_modules'],
     // An array of file extensions your modules use
     moduleFileExtensions: ['js', 'json'],
-    // A map from regular expressions to module names that allow to stub out resources with a single module
-    moduleNameMapper: {
-        '^Constants(.*)$': '<rootDir>/src/constants$1',
-        '^Images(.*)$': '<rootDir>/src/images$1',
-        '^Utils(.*)$': '<rootDir>/src/utils$1'
-    },
     // A map from regular expressions to paths to transformers
     transform: {
         '^.+\\.(js)$': 'babel-jest',

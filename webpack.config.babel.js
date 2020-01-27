@@ -36,12 +36,7 @@ export default {
         filename: `${ASSETS_PATH}/js/[name].[chunkhash].js`
     },
     resolve: {
-        extensions: ['.js', '.jsx', '.css', '.less', '.scss'],
-        alias: {
-            Constants: path.resolve(__dirname, 'src/constants/'),
-            Images: path.resolve(__dirname, 'src/images/'),
-            Utils: path.resolve(__dirname, 'src/utils/')
-        }
+        extensions: ['.js', '.jsx', '.css', '.less', '.scss']
     },
     module: {
         rules: [{
@@ -114,7 +109,6 @@ export default {
         // 配置全局变量
         new webpack.DefinePlugin({
             ...define(globals)
-            // 'process.env.NODE_ENV': JSON.stringify('development')
         })
     ]
 };
