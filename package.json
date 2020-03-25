@@ -26,7 +26,7 @@
     "start": "cross-env NODE_ENV=development webpack-dev-server --colors",
     "mock": "mock-server ./mock/data --static ./mock/static --config ./mock/mock.config.js --watch",
     "start:mock": "concurrently \"cross-env npm start\" \"npm run mock\"",
-    "lint:js": "eslint src/**/*.{js,jsx} -c .eslintrc.prod.json --fix",
+    "lint:js": "eslint -c .eslintrc.prod.json src/ --ext .js,.jsx --fix",
     "test": "jest",
     "package": "cross-env BUILD_PATH=dist npm run build:prod",
     "link": "npm run package && npm link",
