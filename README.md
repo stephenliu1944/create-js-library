@@ -8,8 +8,8 @@
 
 ## License
 
-# 项目介绍
-该项目脚手架用于开发纯JS库, 支持打包为 UMD, ESModule(esm), CommonJS(cjs) 格式.
+# 脚手架介绍
+脚手架用于开发纯JS库, 支持打包为 UMD, ESModule(esm), CommonJS(cjs) 格式.
 
 ## 项目依赖
 ```
