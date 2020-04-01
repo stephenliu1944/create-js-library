@@ -8,8 +8,8 @@
 
 ## License
 
-# 项目介绍
-该项目脚手架用于开发纯JS库, 支持打包为 UMD, ESModule(esm), CommonJS(cjs) 格式.
+# 脚手架介绍
+脚手架用于开发纯JS库, 支持打包为 UMD, ESModule(esm), CommonJS(cjs) 格式.
 
 ## 项目依赖
 ```
@@ -77,7 +77,7 @@ npm login
     "proxies": {}                   // HTTP请求代理配置, 如需要可参考 @easytool/proxy-config 文档配置
   },
   "parcels": {                      // 生产环境打包配置
-    "name": "MyLib",                // 模块打包为 umd 格式时, 使用的全局变量名称
+    "library": "MyLib",             // 模块打包为 umd 格式时, 使用的全局变量名称
     "exports": "auto",              // 模块打包为 umd 和 cjs 格式时的导出模式, 参考 rollup > output.exports 文档说明
     "external": [],                 // 模块打包时排除的依赖项, 参考 rollup > external 文档说明
     "globals": {}                   // 模块打包为 umd 格式时, 依赖项使用的全局变量名称, 参考 rollup > output.globals 文档说明
@@ -85,6 +85,18 @@ npm login
 }
 ```
 其余配置请参考npm官方文档.
+
+## 别名
+默认在 babel.config.js 中配置了 Constants, Images, Utils 三个路径别名(webpack, rollup, jest共享).
+```js
+['babel-plugin-module-resolver', {
+    alias: {
+        'Constants': './src/constants',
+        'Images': './src/images',
+        'Utils': './src/utils'
+    }
+}]
+```
 
 ## 本地调试
 ### 单元测试

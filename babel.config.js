@@ -25,6 +25,13 @@ module.exports = function(api) {
         '@babel/plugin-proposal-optional-chaining',
         ['@babel/plugin-proposal-pipeline-operator', { 
             'proposal': 'minimal' 
+        }],
+        ['babel-plugin-module-resolver', {
+            alias: {
+                'Constants': './src/constants',
+                'Images': './src/images',
+                'Utils': './src/utils'
+            }
         }]
     ];
 

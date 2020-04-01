@@ -1,16 +1,15 @@
-import { uglify } from 'rollup-plugin-uglify';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
+import { uglify } from 'rollup-plugin-uglify';
 import babel from 'rollup-plugin-babel';
 import { eslint } from 'rollup-plugin-eslint';
 import del from 'rollup-plugin-delete';
-import alias from 'rollup-plugin-alias';
 import url from 'rollup-plugin-url';
 import merge from 'lodash/merge';
 import pkg from './package.json';
 
-const { main, module, browser, parcels: { name, exports, external, globals } } = pkg;
+const { main, module, browser, parcels: { library, exports, external, globals } } = pkg;
 const BUILD_PATH = process.env.BUILD_PATH || 'build';
 const umdFile = browser.split('/').pop();
 const cjsFile = main.split('/').pop();
@@ -36,11 +35,6 @@ function base(file) {
         plugins: [
             del({
                 targets: `${BUILD_PATH}/${file}`
-            }),
-            alias({
-                Constants: 'src/constants',
-                Images: 'src/images',
-                Utils: 'src/utils'
             }),
             eslint({
                 fix: true,
@@ -68,7 +62,7 @@ export default [rollupMerge(base(umdFile), {
     output: {
         format: 'umd',
         sourcemap: true,
-        name,
+        name: library,
         exports,
         globals
     },
