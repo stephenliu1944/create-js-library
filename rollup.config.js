@@ -5,15 +5,19 @@ import { uglify } from 'rollup-plugin-uglify';
 import babel from 'rollup-plugin-babel';
 import { eslint } from 'rollup-plugin-eslint';
 import del from 'rollup-plugin-delete';
-import url from 'rollup-plugin-url';
+import url from '@rollup/plugin-url';
 import merge from 'lodash/merge';
 import pkg from './package.json';
 
 const { main, module, browser, parcels: { library, exports, external, globals } } = pkg;
 const BUILD_PATH = process.env.BUILD_PATH || 'build';
-const umdFile = browser.split('/').pop();
-const cjsFile = main.split('/').pop();
-const esmFile = module.split('/').pop();
+const umdFile = getFilename(browser);
+const cjsFile = getFilename(main);
+const esmFile = getFilename(module);
+
+function getFilename(dest = '') {
+    return dest.split('/').pop();
+}
 
 function rollupMerge(base, source) {
     var { plugins: basePlugins = [], ...baseOthers } = base;
@@ -50,15 +54,16 @@ function base(file) {
             resolve(),
             commonjs(),                   
             json(),
-            // 导入的文件
+            // 导入的文件, 仅使用base64
             url({
-                limit: 999999 * 1024                      // only use inline files, don't use copy files.
+                limit: 99999 * 1024
             })
         ]
     };
 }
 
 export default [rollupMerge(base(umdFile), {
+    // umd module
     output: {
         format: 'umd',
         sourcemap: true,
@@ -70,11 +75,13 @@ export default [rollupMerge(base(umdFile), {
         uglify()	                     
     ]
 }), rollupMerge(base(cjsFile), {
+    // commonjs module
     output: {
         format: 'cjs',
         exports
     }
 }), rollupMerge(base(esmFile), {
+    // es module
     output: {
         format: 'es'
     }
