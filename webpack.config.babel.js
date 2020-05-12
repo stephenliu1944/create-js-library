@@ -100,7 +100,7 @@ export default {
         // index.html 模板插件
         new HtmlWebpackPlugin({                             
             filename: 'index.html',
-            template: './test/template.html'
+            template: './test/template.ejs'
         }),
         // 文件大小写检测
         new CaseSensitivePathsPlugin(),          
