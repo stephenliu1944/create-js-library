@@ -19,7 +19,7 @@ gulp:    v4
 jest:    v23
 webpack  v4
 rollup:  v1.27
-node:    v8+
+node:    v10
 ```
 
 ## 使用教程
