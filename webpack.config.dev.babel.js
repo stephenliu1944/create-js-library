@@ -50,7 +50,7 @@ export default {
                 loader: 'eslint-loader',
                 options: {
                     fix: true,
-                    configFile: '.eslintrc.json'
+                    configFile: '.eslintrc.js'
                 }
             }]
         }, {

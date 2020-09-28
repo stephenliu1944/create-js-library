@@ -45,7 +45,7 @@ function base(file) {
                 throwOnError: true,
                 throwOnWarning: true,
                 include: ['src/**/*.js'], 
-                configFile: '.eslintrc.prod.json'
+                configFile: '.eslintrc.prod.js'
             }),
             babel({
                 exclude: 'node_modules/**',  
