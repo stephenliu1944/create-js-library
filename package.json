@@ -21,12 +21,12 @@
     "README.md"
   ],
   "scripts": {
-    "build:dev": "cross-env NODE_ENV=development webpack --colors --display-error-details",
+    "build:dev": "cross-env NODE_ENV=development webpack --config webpack.config.dev.babel.js --colors --display-error-details",
     "build:prod": "cross-env NODE_ENV=production rollup -c rollup.config.js",
     "start": "cross-env NODE_ENV=development webpack-dev-server --colors",
     "mock": "mock-server ./mock/data --static ./mock/static --config ./mock/mock.config.js --watch",
     "start:mock": "concurrently \"cross-env npm start\" \"npm run mock\"",
-    "lint:js": "eslint -c .eslintrc.prod.json src/ --ext .js,.jsx --fix",
+    "lint:js": "eslint -c .eslintrc.prod.js src/ --ext .js,.jsx --fix",
     "test": "jest",
     "package": "cross-env BUILD_PATH=dist npm run build:prod",
     "link": "npm run package && npm link",
@@ -44,7 +44,7 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx}": [
-      "eslint -c .eslintrc.prod.json --fix",
+      "eslint -c .eslintrc.prod.js --fix",
       "git add"
     ]
   },
