@@ -1,7 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
-import { settings } from '@easytool/proxy-config';
-import define from '@easytool/define-config';
+import proxyConfig from '@easytool/proxy-config';
+import defineConfig from '@easytool/define-config';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
@@ -24,7 +24,7 @@ export default {
         historyApiFallback: true,   // browserHistory路由
         contentBase: path.resolve(__dirname, BUILD_PATH),
         proxy: {
-            ...settings(proxies)
+            ...proxyConfig(proxies)
         }
     },
     entry: {
@@ -36,7 +36,7 @@ export default {
         filename: `${ASSETS_PATH}/js/[name].[chunkhash].js`
     },
     resolve: {
-        extensions: ['.js', '.jsx', '.css', '.less', '.scss']
+        extensions: ['.js', '.jsx']
     },
     module: {
         rules: [{
@@ -67,21 +67,6 @@ export default {
             }]
         }, {
             /**
-             * CSS加载器
-             */
-            test: /\.css$/,
-            use: [
-                'style-loader',
-                {
-                    loader: 'css-loader',
-                    options: {
-                        modules: true,                        
-                        localIdentName: '[local]__[hash:base64:5]'
-                    }
-                }                
-            ]
-        }, {
-            /**
              * 图片加载器
              */
             test: /\.(png|jpg|jpeg|gif|svg)$/,
@@ -89,7 +74,7 @@ export default {
                 loader: 'url-loader',
                 options: {
                     limit: 10,
-                    name: `${ASSETS_PATH}/images/[name]_[hash].[ext]`
+                    name: `${ASSETS_PATH}/images/[name].[ext]`
                 }
             }]
         }]
@@ -108,7 +93,7 @@ export default {
         // new WebpackBundleAnalyzer.BundleAnalyzerPlugin(),
         // 配置全局变量
         new webpack.DefinePlugin({
-            ...define(globals)
+            ...defineConfig(globals)
         })
     ]
 };

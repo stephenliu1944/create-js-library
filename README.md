@@ -70,13 +70,12 @@ npm login
       "local": 8080,                // web服务端口
       "mock": 3000                  // mock服务端口
     },
+    "proxies": {},                  // HTTP请求代理配置, 如需要可参考 @easytool/proxy-config 文档配置
     "globals": {                    // 全局变量, 仅适用于开发环境, 生产环境无效
-      "__DEV__": true,
-      "process.env.NODE_ENV": "development"
+      "__DEV__": true
     },
-    "proxies": {}                   // HTTP请求代理配置, 如需要可参考 @easytool/proxy-config 文档配置
   },
-  "parcels": {                      // 生产环境打包配置
+  "parcel": {                      // 生产环境打包配置
     "library": "MyLib",             // 模块打包为 umd 格式时, 使用的全局变量名称
     "exports": "auto",              // 模块打包为 umd 和 cjs 格式时的导出模式, 参考 rollup > output.exports 文档说明
     "external": [],                 // 模块打包时排除的依赖项, 参考 rollup > external 文档说明
