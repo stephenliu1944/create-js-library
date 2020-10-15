@@ -1,2 +1,2 @@
-export module1 from './module1';
-export module2 from './module2';
+export * as module1 from './module1';
+export { default as Module2 } from './module2';

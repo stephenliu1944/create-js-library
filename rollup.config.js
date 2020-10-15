@@ -9,7 +9,7 @@ import url from '@rollup/plugin-url';
 import merge from 'lodash/merge';
 import pkg from './package.json';
 
-const { main, module, browser, parcels: { library, exports, external, globals } } = pkg;
+const { main, module, browser, parcel: { library, exports, external, globals } } = pkg;
 const BUILD_PATH = process.env.BUILD_PATH || 'build';
 const umdFile = getFilename(browser);
 const cjsFile = getFilename(main);

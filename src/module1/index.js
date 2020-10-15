@@ -1,6 +1,1 @@
-/**
- * Demo
- */
-export default function module1(message) {
-    return message;
-}
+export * from './module1';

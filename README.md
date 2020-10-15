@@ -44,10 +44,16 @@ npm login
 {
   "name": "my-lib",                 // 模块名称
   "version": "0.1.0",               // 模块版本
-  "description": "Use for development JS library.",     // 模块描述
   "main": "dist/index.cjs.js",      // 模块引入主路径
   "module": "dist/index.esm.js",    // 模块esm格式引入路径
   "browser": "dist/index.umd.js",   // 模块umd格式引入路径
+  "parcel": {                       // 生产环境打包配置
+    "library": "MyLib",             // 模块打包为 umd 格式时, 使用的全局变量名称
+    "exports": "auto",              // 模块打包为 umd 和 cjs 格式时的导出模式, 参考 rollup > output.exports 文档说明
+    "external": [],                 // 模块打包时排除的依赖项, 参考 rollup > external 文档说明
+    "globals": {}                   // 模块打包为 umd 格式时, 依赖项使用的全局变量名称, 参考 rollup > output.globals 文档说明
+  }
+  "description": "Use for development JS library.",     // 模块描述
   "license": "MIT",                 // 模块使用协议
   "repository": {                   // 模块保存的仓库地址
     "type": "git",
@@ -70,17 +76,10 @@ npm login
       "local": 8080,                // web服务端口
       "mock": 3000                  // mock服务端口
     },
+    "proxies": {},                  // HTTP请求代理配置, 如需要可参考 @easytool/proxy-config 文档配置
     "globals": {                    // 全局变量, 仅适用于开发环境, 生产环境无效
-      "__DEV__": true,
-      "process.env.NODE_ENV": "development"
-    },
-    "proxies": {}                   // HTTP请求代理配置, 如需要可参考 @easytool/proxy-config 文档配置
-  },
-  "parcels": {                      // 生产环境打包配置
-    "library": "MyLib",             // 模块打包为 umd 格式时, 使用的全局变量名称
-    "exports": "auto",              // 模块打包为 umd 和 cjs 格式时的导出模式, 参考 rollup > output.exports 文档说明
-    "external": [],                 // 模块打包时排除的依赖项, 参考 rollup > external 文档说明
-    "globals": {}                   // 模块打包为 umd 格式时, 依赖项使用的全局变量名称, 参考 rollup > output.globals 文档说明
+      "__DEV__": true
+    }
   }
 }
 ```
@@ -152,7 +151,7 @@ src                                         // 项目源码目录
     |-module1.js                            // 模块文件.
 |-module2                                   // 模块组件2
     |-index.js                              // 组件的索引文件, 便于外部快速引用.
-    |-module2.js                            // 模块文件.
+    |-Module2.js                            // 模块文件.
 |-utils                                     // 工具文件目录.
     |-common.js                             // 常用工具库.
 |-index.js                                  // 模块打包时的入口js文件.

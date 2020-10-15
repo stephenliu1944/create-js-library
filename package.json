@@ -1,10 +1,16 @@
 {
   "name": "my-lib",
   "version": "0.1.0",
-  "description": "Use for development JS library.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "browser": "dist/index.umd.js",
+  "parcel": {
+    "library": "MyLib",
+    "exports": "auto",
+    "external": [],
+    "globals": {}
+  },
+  "description": "Use for development JS library.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -23,7 +29,7 @@
   "scripts": {
     "build:dev": "cross-env NODE_ENV=development webpack --config webpack.config.dev.babel.js --colors --display-error-details",
     "build:prod": "cross-env NODE_ENV=production rollup -c rollup.config.js",
-    "start": "cross-env NODE_ENV=development webpack-dev-server --colors",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.dev.babel.js --colors",
     "mock": "mock-server ./mock/data --static ./mock/static --config ./mock/mock.config.js --watch",
     "start:mock": "concurrently \"cross-env npm start\" \"npm run mock\"",
     "lint:js": "eslint -c .eslintrc.prod.js src/ --ext .js,.jsx --fix",
@@ -62,7 +68,7 @@
     "@babel/preset-env": "^7.0.0",
     "@babel/register": "^7.0.0",
     "@easytool/define-config": "^0.1.1",
-    "@easytool/mock-server": "^0.1.2",
+    "@easytool/mock-server": "^0.2.1",
     "@easytool/proxy-config": "^0.1.2",
     "@rollup/plugin-commonjs": "^11.0.1",
     "@rollup/plugin-json": "^4.0.1",
@@ -106,16 +112,9 @@
       "local": 8080,
       "mock": 3000
     },
+    "proxies": {},
     "globals": {
-      "__DEV__": true,
-      "process.env.NODE_ENV": "development"
-    },
-    "proxies": {}
-  },
-  "parcels": {
-    "library": "MyLib",
-    "exports": "auto",
-    "external": [],
-    "globals": {}
+      "__DEV__": true
+    }
   }
 }
