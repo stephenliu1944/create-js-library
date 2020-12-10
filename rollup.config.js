@@ -1,44 +1,58 @@
-import resolve from '@rollup/plugin-node-resolve';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
-import { uglify } from 'rollup-plugin-uglify';
-import babel from 'rollup-plugin-babel';
-import { eslint } from 'rollup-plugin-eslint';
-import del from 'rollup-plugin-delete';
+import babel from '@rollup/plugin-babel';
+import eslint from '@rollup/plugin-eslint';
 import url from '@rollup/plugin-url';
-import merge from 'lodash/merge';
-import pkg from './package.json';
+import del from 'rollup-plugin-delete';
+import { terser } from 'rollup-plugin-terser';
+import merge from 'lodash/mergeWith';
+import { main, module, browser, parcel } from './package.json';
 
-const { main, module, browser, parcel: { library, exports, external, globals } } = pkg;
-const BUILD_PATH = process.env.BUILD_PATH || 'build';
-const umdFile = getFilename(browser);
-const cjsFile = getFilename(main);
-const esmFile = getFilename(module);
-
-function getFilename(dest = '') {
-    return dest.split('/').pop();
-}
+const BUILD_PATH = 'dist';
+const { library, exports, externals, globals } = parcel;
 
 function rollupMerge(base, source) {
-    var { plugins: basePlugins = [], ...baseOthers } = base;
-    var { plugins: sourcePlugins = [], ...sourceOthers } = source;
-
-    var config = merge({}, baseOthers, sourceOthers);
-    config.plugins = basePlugins.concat(sourcePlugins);
+    let config = merge({}, base, source, (obj, src, key) => {
+        // 合并数组
+        if (Array.isArray(obj) || Array.isArray(src)) {
+            return [].concat(obj, src).filter(options => options);
+        }
+    });
     
     return config;
 }
 
-function base(file) {
+export function getFilename(format) {
+    let filename;
+
+    switch (format) {
+        case 'cjs':
+            filename = main.split('/').pop();
+            break;
+        case 'es':
+            filename = module.split('/').pop();
+            break;
+        case 'umd':
+            filename = browser.split('/').pop();
+            break;
+    }
+
+    return filename;
+}
+
+function base(format) {
+    let filename = getFilename(format);
+
     return {
         input: 'src/index.js',
         output: {
-            file: `${BUILD_PATH}/${file}`
+            file: `${BUILD_PATH}/${filename}`
         },
-        external,               // 打包时排除外部依赖包
+        external: externals,
         plugins: [
             del({
-                targets: `${BUILD_PATH}/${file}`
+                targets: `${BUILD_PATH}/${filename}`
             }),
             eslint({
                 fix: true,
@@ -48,11 +62,11 @@ function base(file) {
                 configFile: '.eslintrc.prod.js'
             }),
             babel({
-                exclude: 'node_modules/**',  
-                runtimeHelpers: true
+                exclude: 'node_modules/**',
+                babelHelpers: 'runtime'
             }),
-            resolve(),
-            commonjs(),                   
+            // nodeResolve(),
+            commonjs(),
             json(),
             // 导入的文件, 仅使用base64
             url({
@@ -62,7 +76,7 @@ function base(file) {
     };
 }
 
-export default [rollupMerge(base(umdFile), {
+const parcels = [{
     // umd module
     output: {
         format: 'umd',
@@ -72,17 +86,21 @@ export default [rollupMerge(base(umdFile), {
         globals
     },
     plugins: [
-        uglify()	                     
+        terser()	                     
     ]
-}), rollupMerge(base(cjsFile), {
+}, {
     // commonjs module
     output: {
         format: 'cjs',
         exports
-    }
-}), rollupMerge(base(esmFile), {
+    },
+    external: [/@babel\/runtime/]
+}, {
     // es module
     output: {
         format: 'es'
-    }
-})];
+    },
+    external: [/@babel\/runtime/]
+}];
+
+export default parcels.map(parcel => rollupMerge(base(parcel.output.format), parcel));

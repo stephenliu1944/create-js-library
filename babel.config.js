@@ -1,20 +1,13 @@
-const ENV = {
-    DEVELOPMENT: 'development',
-    PRODUCTION: 'production',
-    TEST: 'test'
-};
-
 module.exports = function(api) {
     api.cache(true);
     
-    var env = process.env.NODE_ENV;
     var presets = [
         ['@babel/preset-env', {
             'targets': [
                 'last 2 version',
                 'ie >= 9'
             ],
-            modules: env === ENV.PRODUCTION ? false : 'commonjs'   // transform esm to cjs, false to keep esm.
+            modules: process.env.NODE_ENV === 'production' ? false : 'commonjs'   // rollup需要设置为 false
         }]
     ];
     var plugins = [
@@ -35,12 +28,14 @@ module.exports = function(api) {
         }]
     ];
 
-    switch (env) {
-        case ENV.DEVELOPMENT:
+    switch (process.env.NODE_ENV) {
+        case 'development':
             break;
-        case ENV.PRODUCTION:        
+        case 'link':
             break;
-        case ENV.TEST:
+        case 'production':        
+            break;
+        case 'test':
             break;
     }
 
