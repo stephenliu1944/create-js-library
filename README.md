@@ -33,63 +33,6 @@ jest:       v23
 npm install
 ```
 
-## 注册和登陆
-注册npm账号, 执行后会依次提示输入用户名, 密码, 邮箱.
-```
-npm adduser  
-```
-
-登录npm服务, 便于发布.
-```
-npm login
-```
-
-## 模块配置
-```js
-{
-  "name": "my-lib",                 // 模块名称
-  "version": "0.1.0",               // 模块版本
-  "main": "dist/index.cjs.js",      // 模块引入主路径
-  "module": "dist/index.esm.js",    // 模块esm格式引入路径
-  "browser": "dist/index.umd.js",   // 模块umd格式引入路径
-  "parcel": {                       // 生产环境打包配置
-    "library": "MyLib",             // 模块打包为 umd 格式时, 使用的全局变量名称
-    "externals": [],                // 模块打包时排除的依赖项, 参考 rollup > external 文档说明
-    "exports": "auto",              // 模块打包为 umd 和 cjs 格式时的导出模式, 参考 rollup > output.exports 文档说明
-    "globals": {}                   // 模块打包为 umd 格式时, 依赖项使用的全局变量名称, 参考 rollup > output.globals 文档说明
-  }
-  "description": "Use for development JS library.",     // 模块描述
-  "license": "MIT",                 // 模块使用协议
-  "repository": {                   // 模块保存的仓库地址
-    "type": "git",
-    "url": ""
-  },
-  "homepage": "",                   // 模块首页地址
-  "bugs": {                         // 模块提issue地址
-    "url": ""
-  },
-  "keywords": [],                   // 模块搜索关键字
-  "files": [                        // 模块打包上传到npm服务器的文件
-    "dist",
-    "LICENSE",
-    "README.md"
-  ],
-  ...
-  // 以下为项目自定义属性, npm官方文档不存在.
-  "devEnvironments": {              // 开发环境配置
-    "servers": {                    // 本地服务配置
-      "local": 8080,                // web服务端口
-      "mock": 3000                  // mock服务端口
-    },
-    "proxies": {},                  // HTTP请求代理配置, 如需要可参考 @easytool/proxy-config 文档配置
-    "globals": {                    // 全局变量, 仅适用于开发环境, 生产环境无效
-      "__DEV__": true
-    }
-  }
-}
-```
-其余配置请参考npm官方文档.
-
 ## 开发
 ### 别名
 默认在 babel.config.js 中配置了 Constants, Images, Utils 三个路径别名(webpack, rollup, jest共享).
@@ -152,7 +95,54 @@ npm link my-lib(模块名称)
 npm start
 ```
 
-## 打包发布
+## 模块配置
+```js
+{
+  "name": "my-lib",                 // 模块名称
+  "version": "0.1.0",               // 模块版本
+  "main": "dist/index.cjs.js",      // 模块引入主路径
+  "module": "dist/index.esm.js",    // 模块esm格式引入路径
+  "browser": "dist/index.umd.js",   // 模块umd格式引入路径
+  "parcel": {                       // 生产环境打包配置
+    "library": "MyLib",             // 模块打包为 umd 格式时, 使用的全局变量名称
+    "externals": [],                // 模块打包时排除的依赖项, 参考 rollup > external 文档说明
+    "exports": "auto",              // 模块打包为 umd 和 cjs 格式时的导出模式, 参考 rollup > output.exports 文档说明
+    "globals": {}                   // 模块打包为 umd 格式时, 依赖项使用的全局变量名称, 参考 rollup > output.globals 文档说明
+  }
+  "description": "Use for development JS library.",     // 模块描述
+  "license": "MIT",                 // 模块使用协议
+  "repository": {                   // 模块保存的仓库地址
+    "type": "git",
+    "url": ""
+  },
+  "homepage": "",                   // 模块首页地址
+  "bugs": {                         // 模块提issue地址
+    "url": ""
+  },
+  "keywords": [],                   // 模块搜索关键字
+  "files": [                        // 模块打包上传到npm服务器的文件
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  ...
+}
+```
+其余配置请参考npm官方文档.
+
+## 部署
+### 1. 注册和登录
+注册npm账号, 执行后会依次提示输入用户名, 密码, 邮箱.
+```
+npm adduser  
+```
+
+登录npm服务, 便于发布.
+```
+npm login
+```
+
+### 2. 发布
 1. 发布X版本号执行 bin/publish-major.bat, 表示有重大更新, 并且不兼容老的版本.
 2. 发布Y版本号执行 bin/publish-minor.bat, 表示有功能更新, 并且兼容老的版本.
 3. 发布Z版本号执行 bin/publish-patch.bat, 表示有bug修复, 并且兼容老的版本.
