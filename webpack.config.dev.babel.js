@@ -6,16 +6,23 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import WebpackBundleAnalyzer from 'webpack-bundle-analyzer';
-import { devEnvironments } from './package.json';
+import { getFilename } from './rollup.config';
+import { name, parcel, devEnvironments } from './package.json';
 
+const NODE_ENV = process.env.NODE_ENV;      // development, link
+const BUILD_PATH = NODE_ENV === 'development' ? 'build' : 'dist';
+const { library, externals } = parcel;
 const { servers, proxies, globals } = devEnvironments;
-const BUILD_PATH = 'build';
-const ASSETS_PATH = 'assets';
 
 export default {
     mode: 'development',
-    devtool: 'cheap-module-eval-source-map',
+    devtool: 'cheap-module-source-map',
     devServer: {
+        writeToDisk: NODE_ENV === 'link',
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': 'true'
+        },
         host: '0.0.0.0',
         port: servers.local,
         inline: true,
@@ -28,13 +35,16 @@ export default {
         }
     },
     entry: {
-        main: ['./test/app.js']
+        main: [NODE_ENV === 'development' ? './test/index.js' : './src/index.js']
     },
     output: {
-        publicPath: '/',
+        filename: getFilename('umd'),
         path: path.resolve(__dirname, BUILD_PATH),
-        filename: `${ASSETS_PATH}/js/[name].[chunkhash].js`
+        library,
+        libraryTarget: 'umd',
+        jsonpFunction: name            // 避免多个应用之间 jsonpFunction 名冲突
     },
+    externals: NODE_ENV === 'development' ? undefined : externals,
     resolve: {
         extensions: ['.js', '.jsx']
     },
@@ -73,8 +83,8 @@ export default {
             use: [{
                 loader: 'url-loader',
                 options: {
-                    limit: 10,
-                    name: `${ASSETS_PATH}/images/[name].[ext]`
+                    limit: 99999 * 1024
+                    // name: 'images/[name].[ext]'
                 }
             }]
         }]
@@ -82,18 +92,18 @@ export default {
     plugins: [
         // 清除编译目录
         new CleanWebpackPlugin(),
-        // index.html 模板插件
-        new HtmlWebpackPlugin({                             
-            filename: 'index.html',
-            template: './test/template.ejs'
-        }),
         // 文件大小写检测
-        new CaseSensitivePathsPlugin(),          
-        // check package size
-        // new WebpackBundleAnalyzer.BundleAnalyzerPlugin(),
+        new CaseSensitivePathsPlugin(),
+        // 主页面入口index.html
+        NODE_ENV === 'development' && new HtmlWebpackPlugin({                             
+            filename: 'index.html',
+            template: './test/index.ejs'
+        }),
         // 配置全局变量
-        new webpack.DefinePlugin({
+        NODE_ENV === 'development' && new webpack.DefinePlugin({
             ...defineConfig(globals)
         })
-    ]
+        // check package size
+        // new WebpackBundleAnalyzer.BundleAnalyzerPlugin()
+    ].filter(plugin => plugin)
 };
