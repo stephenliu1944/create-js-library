@@ -16,7 +16,7 @@ function rollupMerge(base, source) {
     let config = merge({}, base, source, (obj, src, key) => {
         // 合并数组
         if (Array.isArray(obj) || Array.isArray(src)) {
-            return [].concat(obj, src).filter(options => options);
+            return [].concat(obj, src).filter(Boolean);
         }
     });
     

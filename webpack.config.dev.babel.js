@@ -105,5 +105,5 @@ export default {
         })
         // check package size
         // new WebpackBundleAnalyzer.BundleAnalyzerPlugin()
-    ].filter(plugin => plugin)
+    ].filter(Boolean)
 };
