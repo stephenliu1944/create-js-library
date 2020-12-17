@@ -12,6 +12,7 @@ module.exports = function(api) {
     ];
     var plugins = [
         '@babel/plugin-transform-runtime',
+        '@babel/plugin-syntax-dynamic-import',
         '@babel/plugin-proposal-class-properties',
         '@babel/plugin-proposal-export-default-from',
         '@babel/plugin-proposal-export-namespace-from',
