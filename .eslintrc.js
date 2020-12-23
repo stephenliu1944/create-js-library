@@ -8,7 +8,6 @@ module.exports = {
         'es6': true,
         'browser': true,
         'node': true,
-        'jquery': true,
         'commonjs': true
     },
     'rules': {
@@ -41,6 +40,7 @@ module.exports = {
         'no-lonely-if': 'error',
         'no-self-assign': 'error',
         'no-multiple-empty-lines': ['warn', {'max': 1}],
+        // 'no-unused-vars': 'warn',
         'space-infix-ops': 'error',
         'spaced-comment': 'warn',
         'comma-spacing': 'error',
@@ -56,7 +56,7 @@ module.exports = {
         'eqeqeq': 'error',
         'radix': 'error',
         'quotes': ['error', 'single'],
-        'indent': ['warn', 4, {'SwitchCase': 1}],
+        'indent': ['warn', 4, {'SwitchCase': 1, 'MemberExpression': 2, 'ignoredNodes': ['TemplateLiteral']}],
         'keyword-spacing': 'error',
         'arrow-spacing': 'error',
         'array-bracket-spacing': ['error', 'never'],
